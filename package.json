@@ -1,5 +1,5 @@
 {
-  "name": "@shekhar871/phone-validator",
+  "name": "@shekharjadhav/phone-validator",
   "version": "1.0.0",
   "description": "Global Phone Number Validator and Formatter using Node.js, Express, and libphonenumber-js",
   "main": "index.js",
@@ -20,7 +20,7 @@
     "country-detection",
     "express"
   ],
-  "author": "shekhar871",
+  "author": "shekharjadhav",
   "license": "MIT",
   "repository": {
     "type": "git",
