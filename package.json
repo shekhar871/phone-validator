@@ -24,7 +24,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/shekhar871/phone-validator.git"
+    "url": "git+https://github.com/shekhar871/phone-validator.git"
   },
   "homepage": "https://github.com/shekhar871/phone-validator#readme",
   "bugs": {
