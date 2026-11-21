@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Global Phone Number Validator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>📞</text></svg>">
+</head>
+<body>
+  <div class="app-background">
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand-group">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">NumVerify<span class="gradient-text">Pro</span></h1>
+          <p class="brand-subtitle">Global Phone Number Parsing &amp; Validation</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <span class="engine-badge">
+          <span class="badge-dot"></span> libphonenumber-js v1.11
+        </span>
+        <button id="themeToggleBtn" class="theme-toggle" aria-label="Toggle dark/light mode" title="Toggle theme">
+          <svg class="sun-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Grid Dashboard -->
+    <main class="dashboard-grid">
+      <!-- Left Column: Input Form & Quick Samples -->
+      <section class="card input-card">
+        <div class="card-header">
+          <h2 class="card-title">Phone Number Input</h2>
+          <span class="status-chip" id="liveStateChip">Idle</span>
+        </div>
+
+        <form id="phoneForm" class="phone-form" onsubmit="return false;">
+          <!-- Country Preset Dropdown Custom UI -->
+          <div class="form-group">
+            <label for="countrySearchInput" class="form-label">
+              <span>Select Default Country / Calling Code</span>
+              <span class="hint-text">Auto-detected if number has + prefix</span>
+            </label>
+            <div class="custom-select-container" id="customSelect">
+              <button type="button" class="selected-country-btn" id="selectedCountryBtn" aria-haspopup="listbox" aria-expanded="false">
+                <span class="country-flag" id="selectedFlag">🌍</span>
+                <span class="country-name" id="selectedCountryName">Auto-Detect / Select Country</span>
+                <span class="country-dial-code" id="selectedCallingCode"></span>
+                <svg class="chevron-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
+
+              <div class="country-dropdown-menu" id="countryDropdown">
+                <div class="country-search-box">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                  <input type="text" id="countrySearchInput" placeholder="Search country or code (e.g. India, +44, US)..." autocomplete="off">
+                </div>
+                <ul class="country-list" id="countryList" role="listbox">
+                  <!-- Populated dynamically via JS -->
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Phone Number Input with live formatting -->
+          <div class="form-group">
+            <div class="label-row">
+              <label for="phoneInput" class="form-label">Phone Number</label>
+              <span class="sub-label">Supports E.164 (+), national, or spaces/dashes</span>
+            </div>
+            <div class="input-wrapper" id="inputWrapper">
+              <div class="input-prefix" id="inputPrefixBadge">
+                <span id="prefixFlag">🌐</span>
+                <span id="prefixCode">+</span>
+              </div>
+              <input 
+                type="tel" 
+                id="phoneInput" 
+                name="phone"
+                class="phone-input" 
+                placeholder="e.g. +91 98765 43210 or 202-555-0143" 
+                autocomplete="tel"
+                spellcheck="false"
+              >
+              <button type="button" id="clearBtn" class="clear-input-btn hidden" aria-label="Clear input" title="Clear">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="btn-group">
+            <button type="submit" id="validateBtn" class="btn btn-primary">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>Validate Number</span>
+            </button>
+            <button type="button" id="resetBtn" class="btn btn-secondary">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                <path d="M3 3v5h5"></path>
+              </svg>
+              <span>Reset</span>
+            </button>
+          </div>
+        </form>
+
+        <!-- Quick Sample Numbers for Testing -->
+        <div class="quick-samples">
+          <div class="quick-samples-title">Try Quick Test Numbers:</div>
+          <div class="sample-tags">
+            <button class="sample-tag" data-phone="+919876543210" data-country="IN">🇮🇳 India (+91)</button>
+            <button class="sample-tag" data-phone="+1 202 555 0143" data-country="US">🇺🇸 US (+1)</button>
+            <button class="sample-tag" data-phone="+44 20 7946 0958" data-country="GB">🇬🇧 UK (+44)</button>
+            <button class="sample-tag" data-phone="+49 30 123456" data-country="DE">🇩🇪 Germany (+49)</button>
+            <button class="sample-tag" data-phone="+81 90 1234 5678" data-country="JP">🇯🇵 Japan (+81)</button>
+            <button class="sample-tag sample-invalid" data-phone="+1 999 000 11" data-country="US">❌ Invalid Number</button>
+          </div>
+        </div>
+
+        <!-- Live Formatting Helper -->
+        <div class="live-as-you-type">
+          <div class="live-label">Real-time Formatted:</div>
+          <div class="live-value" id="asYouTypeValue">—</div>
+        </div>
+      </section>
+
+      <!-- Right Column: Results Dashboard -->
+      <section class="card results-card" id="resultsCard">
+        <div class="card-header">
+          <h2 class="card-title">Validation Overview</h2>
+          <span class="live-indicator" id="overallStatusBadge">
+            <span class="pulse-indicator"></span>
+            Awaiting Input
+          </span>
+        </div>
+
+        <!-- Empty State Prompt -->
+        <div class="empty-state" id="emptyState">
+          <div class="empty-state-icon">
+            <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+          </div>
+          <h3>Ready to Validate Worldwide</h3>
+          <p>Enter an international or national telephone number or click any of the quick sample chips to test instant parsing and verification.</p>
+        </div>
+
+        <!-- Validation Results Area (hidden until validated) -->
+        <div class="results-content hidden" id="resultsContent">
+          <!-- Main Status Banner -->
+          <div class="status-banner" id="statusBanner">
+            <div class="banner-icon" id="bannerIcon">✓</div>
+            <div class="banner-text">
+              <h3 id="bannerTitle">Valid Phone Number</h3>
+              <p id="bannerDesc">Number adheres to official ITU-T telecommunication plans.</p>
+            </div>
+          </div>
+
+          <!-- Key Metrics Grid -->
+          <div class="metrics-grid">
+            <!-- Validity -->
+            <div class="metric-box" id="metricValidity">
+              <div class="metric-label">Validity</div>
+              <div class="metric-value" id="valValid">Yes</div>
+            </div>
+            <!-- Possibility -->
+            <div class="metric-box" id="metricPossible">
+              <div class="metric-label">Possible Length</div>
+              <div class="metric-value" id="valPossible">Yes</div>
+            </div>
+            <!-- Country -->
+            <div class="metric-box">
+              <div class="metric-label">Country (ISO)</div>
+              <div class="metric-value country-metric-val">
+                <span id="valCountryFlag">🌍</span>
+                <span id="valCountryCode">--</span>
+              </div>
+            </div>
+            <!-- Calling Code -->
+            <div class="metric-box">
+              <div class="metric-label">Calling Code</div>
+              <div class="metric-value" id="valCallingCode">--</div>
+            </div>
+          </div>
+
+          <!-- Country Information Card -->
+          <div class="info-section">
+            <h4 class="section-heading">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+              Country Detection
+            </h4>
+            <div class="country-detail-card">
+              <div class="country-large-flag" id="valLargeFlag">🇮🇳</div>
+              <div class="country-detail-info">
+                <div class="country-detail-name" id="valCountryName">India</div>
+                <div class="country-detail-sub" id="valCountryMeta">ISO 3166-1: IN • Calling Prefix: +91</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Formats & Copy Box -->
+          <div class="info-section">
+            <h4 class="section-heading">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Standardized Formats
+            </h4>
+            
+            <div class="formats-list">
+              <!-- International Format -->
+              <div class="format-row">
+                <div class="format-meta">
+                  <span class="format-title">International</span>
+                  <span class="format-tag">ITU-T E.123</span>
+                </div>
+                <div class="format-display">
+                  <code id="valInternationalFormat">+91 98765 43210</code>
+                  <button class="copy-btn" data-target="valInternationalFormat" title="Copy International Format">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span>Copy</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- National Format -->
+              <div class="format-row">
+                <div class="format-meta">
+                  <span class="format-title">National</span>
+                  <span class="format-tag">Local Dialing</span>
+                </div>
+                <div class="format-display">
+                  <code id="valNationalFormat">098765 43210</code>
+                  <button class="copy-btn" data-target="valNationalFormat" title="Copy National Format">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span>Copy</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- E.164 Format -->
+              <div class="format-row">
+                <div class="format-meta">
+                  <span class="format-title">E.164 Format</span>
+                  <span class="format-tag">Database / API Standard</span>
+                </div>
+                <div class="format-display">
+                  <code id="valE164Format">+919876543210</code>
+                  <button class="copy-btn" data-target="valE164Format" title="Copy E.164 Format">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span>Copy</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- National Number (Raw Digits) -->
+              <div class="format-row">
+                <div class="format-meta">
+                  <span class="format-title">National Number</span>
+                  <span class="format-tag">Significant Digits</span>
+                </div>
+                <div class="format-display">
+                  <code id="valNationalNumber">9876543210</code>
+                  <button class="copy-btn" data-target="valNationalNumber" title="Copy Raw Digits">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span>Copy</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Raw API Response Accordion -->
+          <div class="info-section">
+            <details class="json-accordion">
+              <summary>
+                <span>View Full JSON API Response</span>
+                <span class="accordion-arrow">▼</span>
+              </summary>
+              <pre class="json-viewer" id="jsonViewer"><code>{}</code></pre>
+            </details>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>Powered by <strong>Node.js</strong>, <strong>Express</strong>, and <strong>libphonenumber-js</strong>. Privacy-first: no phone numbers are persisted or logged.</p>
+    </footer>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

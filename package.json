@@ -1,0 +1,49 @@
+{
+  "name": "@shekhar871/phone-validator",
+  "version": "1.0.0",
+  "description": "Global Phone Number Validator and Formatter using Node.js, Express, and libphonenumber-js",
+  "main": "index.js",
+  "bin": {
+    "phone-validator": "server.js"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node -e \"const { validatePhoneNumber } = require('./index.js'); console.log('Testing valid IN number:', validatePhoneNumber('+919876543210').valid === true ? 'PASS' : 'FAIL');\""
+  },
+  "keywords": [
+    "phone-number-validator",
+    "phone-validation",
+    "libphonenumber-js",
+    "e164",
+    "phone-formatter",
+    "country-detection",
+    "express"
+  ],
+  "author": "shekhar871",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shekhar871/phone-validator.git"
+  },
+  "homepage": "https://github.com/shekhar871/phone-validator#readme",
+  "bugs": {
+    "url": "https://github.com/shekhar871/phone-validator/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "index.js",
+    "server.js",
+    "routes/",
+    "services/",
+    "public/",
+    "README.md"
+  ],
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "libphonenumber-js": "^1.11.1"
+  }
+}
